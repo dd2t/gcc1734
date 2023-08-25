@@ -40,6 +40,7 @@ from game import Actions
 import util
 import time
 import search
+from search_problems import SearchProblem
 
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
@@ -133,7 +134,7 @@ class SearchAgent(Agent):
         else:
             return Directions.STOP
 
-class PositionSearchProblem(search.SearchProblem):
+class PositionSearchProblem(SearchProblem):
     """
     A search problem defines the state space, start state, goal test, child
     function and cost function.  This search problem can be used to find paths
@@ -286,7 +287,7 @@ def euclideanHeuristic(position, problem, info={}):
 # This portion is incomplete.  Time to write code!  #
 #####################################################
 
-class CornersProblem(search.SearchProblem):
+class CornersProblem(SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
 

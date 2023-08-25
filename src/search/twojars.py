@@ -1,6 +1,7 @@
 import search
 import random
 from random import randint
+from search_problems import SearchProblem
 import util
 
 # Module Classes
@@ -105,7 +106,7 @@ class TwoJarsState:
 
 
 
-class TwoJarsSearchProblem(search.SearchProblem):
+class TwoJarsSearchProblem(SearchProblem):
     """
       Implementation of a SearchProblem for the Two Jars domain
 

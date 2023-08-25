@@ -14,6 +14,7 @@
 
 import search
 import random
+from search_problems import SearchProblem
 
 # Module Classes
 
@@ -185,7 +186,7 @@ class EightPuzzleState:
 
 # TODO: Implement The methods in this class
 
-class EightPuzzleSearchProblem(search.SearchProblem):
+class EightPuzzleSearchProblem(SearchProblem):
     """
       Implementation of a SearchProblem for the  Eight Puzzle domain
 
