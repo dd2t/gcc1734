@@ -1,2 +1,3 @@
 from .BaseFrontierStrategy import BaseFrontierStrategy
 from .StackFrontierStrategy import StackFrontierStrategy
+from .QueueFrontierStrategy import QueueFrontierStrategy
