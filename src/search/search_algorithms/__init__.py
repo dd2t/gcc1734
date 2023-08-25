@@ -1,1 +1,2 @@
-from .BaseSearchAlgorithm import BaseSearchAlgorithm
+from .GraphSearch import GraphSearch
+from .DepthFirstSearch import DepthFirstSearch

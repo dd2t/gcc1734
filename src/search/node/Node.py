@@ -9,10 +9,10 @@ class Node:
 
     def __init__(self, state, action: Optional[T], cost: int,
                  parent: Optional['Node']) -> None:
-        self._state = state
+        self.state = state
         self.action = action
         self.parent_node = parent
-        self.path_cost: int = parent.path_cost + cost
+        self.path_cost: int = cost if parent is None else parent.path_cost + cost
 
     def getActionSequence(self):
         actions = []
