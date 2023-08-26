@@ -17,7 +17,7 @@ In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
 
-from search_algorithms import DepthFirstSearch, BreadthFirstSearch
+from search_algorithms import DepthFirstSearch, BreadthFirstSearch, AStarSearch
 from search_problems import SearchProblem
 import util
 
@@ -60,8 +60,7 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return AStarSearch(problem, heuristic).run(problem)
 
 
 # Abbreviations
