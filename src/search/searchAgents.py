@@ -426,7 +426,14 @@ def cornersHeuristic(state, problem):
     if len(available_corners) == 0:
         available_corners = [state[0]]
 
-    return min([manhattan_dist(state[0], corner) for corner in available_corners])
+    milestone_distance = 0
+    for _ in range(len(available_corners)):
+        goal_distances = [manhattan_dist(state[0], corner) for corner in available_corners]
+        closest_goal = min(goal_distances)
+        milestone_distance += closest_goal
+        available_corners.pop(goal_distances.index(closest_goal))
+    
+    return milestone_distance
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
