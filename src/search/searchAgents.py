@@ -34,6 +34,7 @@ description for details.
 Good luck and happy searching!
 """
 
+import copy
 from game import Directions
 from game import Agent
 from game import Actions
@@ -316,14 +317,15 @@ class CornersProblem(SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, (False, False, False, False))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # return set(state).issuperset(set(self.corners))
+        return state[1] == (True, True, True, True)
 
     def expand(self, state):
         """
@@ -341,6 +343,10 @@ class CornersProblem(SearchProblem):
             # Add a child state to the child list if the action is legal
             # You should call getActions, getActionCost, and getNextState.
             "*** YOUR CODE HERE ***"
+            nextState = self.getNextState(state, action)
+            cost = self.getActionCost(state, action, nextState)
+            children.append( ( nextState, action, cost) )
+            
 
         self._expanded += 1 # DO NOT CHANGE
         return children
@@ -368,9 +374,14 @@ class CornersProblem(SearchProblem):
         dx, dy = Actions.directionToVector(action)
         nextx, nexty = int(x + dx), int(y + dy)
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        position = (nextx, nexty)
+        if position in self.corners:
+            corners_list = list(self.corners)
+            index = corners_list.index(position)
+            corners_reached = tuple((True if i == index else state[1][i] for i in range(4)))
+            return (position, corners_reached)
         # you will need to replace the None part of the following tuple.
-        return ((nextx, nexty), None)
+        return (position, copy.copy(state[1]))
 
     def getCostOfActionSequence(self, actions):
         """
