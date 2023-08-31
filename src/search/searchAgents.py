@@ -35,6 +35,7 @@ Good luck and happy searching!
 """
 
 import copy
+from typing import Tuple
 from game import Directions
 from game import Agent
 from game import Actions
@@ -414,7 +415,18 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    def manhattan_dist(t1: Tuple[int, int], t2: Tuple[int, int]) -> int:
+        return abs(t2[0] - t1[0]) + abs(t2[1] - t1[1])
+
+    available_corners = []
+    for corner_pos, is_corner_collected in zip(problem.corners, state[1]):
+        if not is_corner_collected:
+            available_corners.append(corner_pos)
+
+    if len(available_corners) == 0:
+        available_corners = [state[0]]
+
+    return min([manhattan_dist(state[0], corner) for corner in available_corners])
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
