@@ -548,8 +548,22 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    def manhattan_dist(t1: Tuple[int, int], t2: Tuple[int, int]) -> int:
+        return abs(t2[0] - t1[0]) + abs(t2[1] - t1[1])
+
+    available_corners = []
+    line_counter = 0
+
+    for line in foodGrid:
+        for column_counter in range(len(line)):
+            if foodGrid[line_counter][column_counter] == True:
+                available_corners.append((line_counter, column_counter))
+        line_counter += 1
+
+    if len(available_corners) == 0:
+        available_corners = [position]
+
+    return min([manhattan_dist(position, corner) for corner in available_corners])
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
