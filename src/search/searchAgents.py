@@ -39,6 +39,7 @@ from typing import List, Tuple
 from game import Directions
 from game import Agent
 from game import Actions
+from search_algorithms import GreedySearch
 import util
 import time
 import search
@@ -605,7 +606,36 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # food_positions = []
+        # i = 0
+        # for line in food:
+        #     for j in range(len(line)):
+        #         if line[j]:
+        #             food_positions.append((i, j))
+        #     i += 1
+
+        # def find_closest_goal(pos, goals: List):
+        #     distances = [problem.mazeDistance(pos, corner) for corner in goals]
+        #     closest_goal_distance = min(distances)
+        #     return closest_goal_distance, distances.index(closest_goal_distance)
+
+        def manhattan_dist(t1: Tuple[int, int], t2: Tuple[int, int]) -> int:
+            return abs(t2[0] - t1[0]) + abs(t2[1] - t1[1])
+
+        def heuristic(state, problem):
+            food_positions = []
+            i = 0
+            for line in problem.food:
+                for j in range(len(line)):
+                    if line[j]:
+                        food_positions.append((i, j))
+                i += 1
+
+            return min([manhattan_dist(state, food_pos) for food_pos in food_positions])
+
+        return GreedySearch(heuristic).run(problem)
+
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -632,6 +662,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         self.startState = gameState.getPacmanPosition()
         self.costFn = lambda x: 1
         self._visited, self._visitedlist, self._expanded = {}, [], 0 # DO NOT CHANGE
+        print(self.food)
+        print(self._visited)
 
     def isGoalState(self, state):
         """
@@ -641,7 +673,16 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        food_positions = []
+        i = 0
+        for line in self.food:
+            for j in range(len(line)):
+                if line[j]:
+                    food_positions.append((i, j))
+            i += 1
+
+        return state in food_positions
+
 
 def mazeDistance(point1, point2, gameState):
     """
