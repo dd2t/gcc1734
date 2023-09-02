@@ -41,7 +41,7 @@ class TwoJarsState:
         False
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.jars[0] == 2
 
     def legalMoves( self ):
         """
@@ -62,7 +62,21 @@ class TwoJarsState:
         ['fillJ4', 'pourJ3intoJ4', 'emptyJ3', 'emptyJ4']
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        all_actions = {'fillJ3', 'fillJ4', 'pourJ3intoJ4', 'pourJ4intoJ3', 'emptyJ3', 'emptyJ4'}
+
+        if self.jars[0] >= 4:
+            all_actions = all_actions.difference({'fillJ4', 'pourJ3intoJ4'})
+
+        if self.jars[0] <= 0:
+            all_actions = all_actions.difference({'emptyJ4', 'pourJ4intoJ3'})
+
+        if self.jars[1] >= 3:
+            all_actions = all_actions.difference({'fillJ3', 'pourJ4intoJ3'})
+
+        if self.jars[1] <= 0:
+            all_actions = all_actions.difference({'emptyJ3', 'pourJ3intoJ4'})
+
+        return list(all_actions)
 
     def result(self, move):
         """
@@ -76,7 +90,27 @@ class TwoJarsState:
         it returns a new object.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        j4, j3 = self.jars
+
+        if move == 'fillJ3':
+            return TwoJarsState((j4, 3))
+
+        elif move == 'fillJ4':
+            return TwoJarsState((4, j3))
+
+        elif move == 'pourJ3intoJ4':
+            return TwoJarsState((min(4, j4 + j3), max(0, j4 + j3 - 4)))
+        
+        elif move == 'pourJ4intoJ3':
+            return TwoJarsState((max(0, j3 + j4 - 3), min(3, j3 + j4)))
+        
+        elif move == 'emptyJ3':
+            return TwoJarsState((j4, 0))
+        
+        elif move == 'emptyJ4':
+            return TwoJarsState((0, j3))
+
+        return TwoJarsState((j4, j3))
 
     # Utilities for comparison and display
     def __eq__(self, other):
@@ -89,7 +123,7 @@ class TwoJarsState:
           True
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return set(self.jars) == set(other.jars)
 
     def __hash__(self):
         return hash(str(self.jars))
@@ -99,7 +133,20 @@ class TwoJarsState:
           Returns a display string for the maze
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # return f'{self.jars[0]}/4    {self.jars[1]}/3'
+        def draw_jar(capacity, fill):
+            lines = []
+            for i in range(capacity + 1, 1, -1):
+                middle = '~~' if i == fill + 1 and fill > 0 else '  '
+                lines.append('|' + middle + '|')
+            lines.append('\\__/')
+            return lines
+
+        j1 = draw_jar(4, self.jars[0])
+        j2 = draw_jar(3, self.jars[1])
+        jars = [p + '\t' + q + '\n' for p, q in zip(j1, ['    '] + j2)]
+
+        return ''.join(jars) + f'\n{self.jars[0]}/4\t{self.jars[1]}/3'
 
     def __str__(self):
         return self.__getAsciiString()
@@ -117,7 +164,7 @@ class TwoJarsSearchProblem(SearchProblem):
         self.start_state = start_state
 
     def getStartState(self):
-        return start_state
+        return self.start_state
 
     def isGoalState(self,state):
         return state.isGoal()
@@ -175,7 +222,7 @@ def main():
     print('A random initial state:')
     print(start_state)
 
-    return
+    # return
 
     problem = TwoJarsSearchProblem(start_state)
     path = search.breadthFirstSearch(problem)
