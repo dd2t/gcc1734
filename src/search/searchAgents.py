@@ -566,10 +566,20 @@ def foodHeuristic(state, problem):
                 available_corners.append((line_counter, column_counter))
         line_counter += 1
 
-    if len(available_corners) == 0:
-        available_corners = [position]
+    def find_closest_goal(pos, goals: List):
+        """Returns the closest goal distance and its index at the goals list."""
+        distances = [manhattan_dist(pos, corner) for corner in goals]
+        closest_goal_distance = min(distances)
+        return closest_goal_distance, distances.index(closest_goal_distance)
 
-    return min([manhattan_dist(position, corner) for corner in available_corners])
+    milestone_distance = 0
+    # available_corners = available_corners[:4] if len(available_corners) > 5 else available_corners
+    while len(available_corners) > 0:
+        closest_goal_distance, idx = find_closest_goal(position, available_corners)
+        position = available_corners.pop(idx)
+        milestone_distance += closest_goal_distance
+
+    return milestone_distance / 2
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
