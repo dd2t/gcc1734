@@ -606,18 +606,6 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        # food_positions = []
-        # i = 0
-        # for line in food:
-        #     for j in range(len(line)):
-        #         if line[j]:
-        #             food_positions.append((i, j))
-        #     i += 1
-
-        # def find_closest_goal(pos, goals: List):
-        #     distances = [problem.mazeDistance(pos, corner) for corner in goals]
-        #     closest_goal_distance = min(distances)
-        #     return closest_goal_distance, distances.index(closest_goal_distance)
 
         def manhattan_dist(t1: Tuple[int, int], t2: Tuple[int, int]) -> int:
             return abs(t2[0] - t1[0]) + abs(t2[1] - t1[1])
