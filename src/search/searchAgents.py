@@ -554,32 +554,27 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    def manhattan_dist(t1: Tuple[int, int], t2: Tuple[int, int]) -> int:
-        return abs(t2[0] - t1[0]) + abs(t2[1] - t1[1])
 
-    available_corners = []
-    line_counter = 0
+    def getMazeDistance(start, end):
+        """
+        Returns the maze distance between any two points, using the search functions
+        you have already built.
+        """
+        try:
+            return problem.heuristicInfo[(start, end)]
+        except:
+            dist = mazeDistance(start, end, problem.startingGameState)
+            problem.heuristicInfo[(start, end)] = dist
+            return dist
 
-    for line in foodGrid:
-        for column_counter in range(len(line)):
-            if foodGrid[line_counter][column_counter] == True:
-                available_corners.append((line_counter, column_counter))
-        line_counter += 1
+    distances = []
+    distances_food = [0]
+    for food in foodGrid.asList():
+        distances.append(getMazeDistance(position, food))
+        for tofood in foodGrid.asList():
+            distances_food.append(getMazeDistance(food, tofood))
 
-    def find_closest_goal(pos, goals: List):
-        """Returns the closest goal distance and its index at the goals list."""
-        distances = [manhattan_dist(pos, corner) for corner in goals]
-        closest_goal_distance = min(distances)
-        return closest_goal_distance, distances.index(closest_goal_distance)
-
-    milestone_distance = 0
-    # available_corners = available_corners[:4] if len(available_corners) > 5 else available_corners
-    while len(available_corners) > 0:
-        closest_goal_distance, idx = find_closest_goal(position, available_corners)
-        position = available_corners.pop(idx)
-        milestone_distance += closest_goal_distance
-
-    return milestone_distance / 2
+    return min(distances)+max(distances_food) if len(distances) else max(distances_food)
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
