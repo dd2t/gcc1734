@@ -53,7 +53,7 @@ class TwoJarsState:
         - pourJ3intoJ4 (despejar J3 em J4)
         - pourJ4intoJ3 (despejar J4 em J3)
         - emptyJ3 (esvaziar J3)
-        - emptyJ4 (esvaziar 43)
+        - emptyJ4 (esvaziar J4)
         
         These are encoded as strings: 'fillJ3', 'fillJ4', 
         'pourJ3intoJ4', 'pourJ4intoJ3', 'emptyJ3', 'emptyJ4'.
